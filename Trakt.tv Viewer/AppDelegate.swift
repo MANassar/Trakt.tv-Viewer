@@ -8,8 +8,6 @@
 
 import UIKit
 
-let traktClientID = "ad005b8c117cdeee58a1bdb7089ea31386cd489b21e14b19818c91511f12a086"
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
