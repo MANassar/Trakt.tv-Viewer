@@ -29,8 +29,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        moviesArray = apiClient.getMostPopularMovies(0)
-//        apiClient.getMostPopularMovies(0, limit: 10)
+//        moviesArray = apiClient.getMostPopularMovies(0)
+        apiClient.getMostPopularMovies(0, limit: 10)
         tableView.reloadData()
     }
     

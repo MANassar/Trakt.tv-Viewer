@@ -47,6 +47,20 @@ class TraktAPIInterface
             print("Getting most popular movies")
         }
         
+        let urlString = baseURL + popularMoviesURL
+        
+        debugPrint(urlString)
+        
+        Alamofire.request(.GET, urlString, parameters: ["extended":"full,images"], headers: defaultHeaders)
+            .responseJSON{
+                response in
+                debugPrint(response)
+                
+                
+        }
+        
+        
+//        Alamofire.request(.GET, urlString, headers: defaultHeaders)
         
         
         
