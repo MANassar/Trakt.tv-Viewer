@@ -8,11 +8,12 @@
 
 import UIKit
 
+let traktClientID = "ad005b8c117cdeee58a1bdb7089ea31386cd489b21e14b19818c91511f12a086"
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.

@@ -1,26 +1,148 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="gsH-nk-MuK">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <!--Navigation Controller-->
+        <scene sceneID="ink-qL-4oS">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Trakt_tv_Viewer" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController id="gsH-nk-MuK" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="E77-3R-CiP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Cei-oI-fGi" kind="relationship" relationship="rootViewController" id="WKf-Be-rb3"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lak-3O-WwU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-429" y="781"/>
+        </scene>
+        <!--Trakt Viewer-->
+        <scene sceneID="Tsf-cG-n8U">
+            <objects>
+                <viewController id="Cei-oI-fGi" customClass="MainViewController" customModule="Trakt_tv_Viewer" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                        <viewControllerLayoutGuide type="top" id="3ot-Dw-MDU"/>
+                        <viewControllerLayoutGuide type="bottom" id="Jxg-D2-lgP"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="gTI-35-ZpS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" barStyle="black" placeholder="Search Keyword" translatesAutoresizingMaskIntoConstraints="NO" id="xSH-Ch-ynp">
+                                <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Cei-oI-fGi" id="fHX-Ql-BdO"/>
+                                </connections>
+                            </searchBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="240" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="b4h-qP-7pp">
+                                <rect key="frame" x="0.0" y="108" width="600" height="492"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MovieCell" rowHeight="240" id="NkF-vM-4UA" customClass="MovieCell" customModule="Trakt_tv_Viewer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="240"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NkF-vM-4UA" id="BqG-2O-LJg">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="239"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9UQ-cS-CHr">
+                                                    <rect key="frame" x="8" y="8" width="150" height="225"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="9UQ-cS-CHr" secondAttribute="height" multiplier="2:3" id="bc6-yA-QIJ"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The Dark Knight Rises again again line 2" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Df3-TV-A3Y">
+                                                    <rect key="frame" x="166" y="27" width="426" height="43"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                                    <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="g3a-dx-Bad">
+                                                    <rect key="frame" x="166" y="107" width="426" height="124"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Year" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UG2-Ji-AFe">
+                                                    <rect key="frame" x="166" y="78" width="426" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Df3-TV-A3Y" firstAttribute="leading" secondItem="9UQ-cS-CHr" secondAttribute="trailing" constant="8" id="Amb-YR-wLF"/>
+                                                <constraint firstItem="g3a-dx-Bad" firstAttribute="top" secondItem="UG2-Ji-AFe" secondAttribute="bottom" constant="8" id="BaR-KB-6Ik"/>
+                                                <constraint firstItem="Df3-TV-A3Y" firstAttribute="trailing" secondItem="BqG-2O-LJg" secondAttribute="trailingMargin" id="DgE-Cn-i6h"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="9UQ-cS-CHr" secondAttribute="bottom" constant="-2" id="U60-qs-RkD"/>
+                                                <constraint firstItem="g3a-dx-Bad" firstAttribute="bottom" secondItem="BqG-2O-LJg" secondAttribute="bottomMargin" id="V94-n2-sbF"/>
+                                                <constraint firstItem="Df3-TV-A3Y" firstAttribute="top" secondItem="BqG-2O-LJg" secondAttribute="topMargin" constant="19" id="YAY-Da-q9e"/>
+                                                <constraint firstItem="9UQ-cS-CHr" firstAttribute="leading" secondItem="BqG-2O-LJg" secondAttribute="leadingMargin" id="dG5-Ga-o0b"/>
+                                                <constraint firstItem="UG2-Ji-AFe" firstAttribute="top" secondItem="Df3-TV-A3Y" secondAttribute="bottom" constant="8" id="ekB-5d-ug5"/>
+                                                <constraint firstItem="UG2-Ji-AFe" firstAttribute="leading" secondItem="9UQ-cS-CHr" secondAttribute="trailing" constant="8" id="grW-oW-L03"/>
+                                                <constraint firstItem="g3a-dx-Bad" firstAttribute="trailing" secondItem="BqG-2O-LJg" secondAttribute="trailingMargin" id="hIG-ib-vWB"/>
+                                                <constraint firstItem="UG2-Ji-AFe" firstAttribute="top" secondItem="Df3-TV-A3Y" secondAttribute="bottom" constant="8" id="n68-aB-IvZ"/>
+                                                <constraint firstItem="UG2-Ji-AFe" firstAttribute="leading" secondItem="9UQ-cS-CHr" secondAttribute="trailing" constant="8" id="qfN-RO-qjZ"/>
+                                                <constraint firstItem="UG2-Ji-AFe" firstAttribute="width" secondItem="Df3-TV-A3Y" secondAttribute="width" id="tie-rO-Tbj"/>
+                                                <constraint firstItem="g3a-dx-Bad" firstAttribute="top" secondItem="UG2-Ji-AFe" secondAttribute="bottom" constant="8" id="vaa-46-ESM"/>
+                                                <constraint firstItem="g3a-dx-Bad" firstAttribute="leading" secondItem="9UQ-cS-CHr" secondAttribute="trailing" constant="8" id="wJC-Y9-zII"/>
+                                                <constraint firstItem="9UQ-cS-CHr" firstAttribute="top" secondItem="BqG-2O-LJg" secondAttribute="topMargin" id="wnO-Cg-hBd"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="overviewTextView" destination="g3a-dx-Bad" id="P8Q-d5-4dY"/>
+                                            <outlet property="posterImageView" destination="9UQ-cS-CHr" id="4NJ-BE-ryB"/>
+                                            <outlet property="titleLabel" destination="Df3-TV-A3Y" id="dC3-lf-gk9"/>
+                                            <outlet property="yearLabel" destination="UG2-Ji-AFe" id="Dgy-31-MgI"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="Cei-oI-fGi" id="gda-Wi-hxh"/>
+                                    <outlet property="delegate" destination="Cei-oI-fGi" id="baU-rS-oVt"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="xSH-Ch-ynp" secondAttribute="trailing" constant="-20" id="2NH-Xm-ktV"/>
+                            <constraint firstItem="xSH-Ch-ynp" firstAttribute="top" secondItem="3ot-Dw-MDU" secondAttribute="bottom" id="A5u-kO-VaI"/>
+                            <constraint firstItem="b4h-qP-7pp" firstAttribute="top" secondItem="xSH-Ch-ynp" secondAttribute="bottom" id="bf1-HQ-IYR"/>
+                            <constraint firstItem="xSH-Ch-ynp" firstAttribute="leading" secondItem="gTI-35-ZpS" secondAttribute="leadingMargin" constant="-20" id="c79-UT-qCL"/>
+                            <constraint firstItem="Jxg-D2-lgP" firstAttribute="top" secondItem="b4h-qP-7pp" secondAttribute="bottom" id="mLr-fX-cuK"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="b4h-qP-7pp" secondAttribute="trailing" constant="-20" id="sgs-tU-M3q"/>
+                            <constraint firstItem="b4h-qP-7pp" firstAttribute="leading" secondItem="gTI-35-ZpS" secondAttribute="leadingMargin" constant="-20" id="uwH-kr-Uho"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Trakt Viewer" id="JMk-oI-RfB"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="R6o-up-6MK" id="Dua-ES-Gjf"/>
+                        <outlet property="tableView" destination="b4h-qP-7pp" id="Mys-nf-IgA"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VBi-XB-bf2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="R6o-up-6MK">
+                    <connections>
+                        <outlet property="delegate" destination="Cei-oI-fGi" id="Rda-N6-IBl"/>
+                        <outlet property="searchBar" destination="xSH-Ch-ynp" id="GnO-Wd-srP"/>
+                        <outlet property="searchContentsController" destination="Cei-oI-fGi" id="D6K-9S-Sxz"/>
+                        <outlet property="searchResultsDataSource" destination="Cei-oI-fGi" id="tlY-07-hRm"/>
+                        <outlet property="searchResultsDelegate" destination="Cei-oI-fGi" id="eFM-N1-UfK"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
+            <point key="canvasLocation" x="322" y="781"/>
         </scene>
     </scenes>
 </document>
