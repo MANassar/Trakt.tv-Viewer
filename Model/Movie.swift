@@ -8,17 +8,24 @@
 
 import Foundation
 
-class Movie
+class MediaShow
 {
-    
     var title:String?
     var year:String?
-//    var traktID:Int?
-//    var slug:String?
-//    var imdb:String?
-//    var tmdb:Int?
+    //    var traktID:Int?
+    //    var slug:String?
+    //    var imdb:String?
+    //    var tmdb:Int?
     var posterFullSizeURLString:String?
     var posterThumbnailURLString:String?
     var overView:String?
+}
+
+class Movie:MediaShow
+{
     
+}
+
+class TVShow:MediaShow
+{
 }

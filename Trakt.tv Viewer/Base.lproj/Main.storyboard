@@ -20,7 +20,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lak-3O-WwU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-429" y="781"/>
+            <point key="canvasLocation" x="-410" y="781"/>
         </scene>
         <!--Trakt Viewer-->
         <scene sceneID="Tsf-cG-n8U">
@@ -36,12 +36,13 @@
                         <subviews>
                             <searchBar contentMode="redraw" barStyle="black" placeholder="Search Keyword" translatesAutoresizingMaskIntoConstraints="NO" id="xSH-Ch-ynp">
                                 <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <outlet property="delegate" destination="Cei-oI-fGi" id="fHX-Ql-BdO"/>
+                                    <outlet property="delegate" destination="Cei-oI-fGi" id="8tR-7i-Mzc"/>
                                 </connections>
                             </searchBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="240" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="b4h-qP-7pp">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="240" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="b4h-qP-7pp">
                                 <rect key="frame" x="0.0" y="108" width="600" height="492"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -64,7 +65,7 @@
                                                     <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="g3a-dx-Bad">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="g3a-dx-Bad">
                                                     <rect key="frame" x="166" y="107" width="426" height="124"/>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -127,20 +128,10 @@
                     </view>
                     <navigationItem key="navigationItem" title="Trakt Viewer" id="JMk-oI-RfB"/>
                     <connections>
-                        <outlet property="searchDisplayController" destination="R6o-up-6MK" id="Dua-ES-Gjf"/>
                         <outlet property="tableView" destination="b4h-qP-7pp" id="Mys-nf-IgA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VBi-XB-bf2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="R6o-up-6MK">
-                    <connections>
-                        <outlet property="delegate" destination="Cei-oI-fGi" id="Rda-N6-IBl"/>
-                        <outlet property="searchBar" destination="xSH-Ch-ynp" id="GnO-Wd-srP"/>
-                        <outlet property="searchContentsController" destination="Cei-oI-fGi" id="D6K-9S-Sxz"/>
-                        <outlet property="searchResultsDataSource" destination="Cei-oI-fGi" id="tlY-07-hRm"/>
-                        <outlet property="searchResultsDelegate" destination="Cei-oI-fGi" id="eFM-N1-UfK"/>
-                    </connections>
-                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="322" y="781"/>
         </scene>

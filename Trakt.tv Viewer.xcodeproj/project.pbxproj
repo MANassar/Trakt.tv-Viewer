@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A0BA8E1BBEDC8757E257C60C /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FB99E254F9549A10AD10264 /* Pods.framework */; };
-		AAB1FC621D496A5D008FF313 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB1FC611D496A5D008FF313 /* Movie.swift */; };
+		AA4E2C171D4BDB9B00CD428E /* MediaObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4E2C161D4BDB9B00CD428E /* MediaObjects.swift */; };
 		AAB1FC641D496B00008FF313 /* TraktAPIInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB1FC631D496B00008FF313 /* TraktAPIInterface.swift */; };
 		AAF59E5D1D494A8B004F6A20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF59E5C1D494A8B004F6A20 /* AppDelegate.swift */; };
 		AAF59E641D494A8E004F6A20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAF59E631D494A8E004F6A20 /* Assets.xcassets */; };
@@ -33,7 +33,7 @@
 		8FB99E254F9549A10AD10264 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9ABC8C8EEAFAEBE53BC13AB1 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AA33492F1D4B93520020967C /* Trakt.tvViewer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Trakt.tvViewer-Bridging-Header.h"; path = "../Trakt.tvViewer-Bridging-Header.h"; sourceTree = "<group>"; };
-		AAB1FC611D496A5D008FF313 /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		AA4E2C161D4BDB9B00CD428E /* MediaObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaObjects.swift; sourceTree = "<group>"; };
 		AAB1FC631D496B00008FF313 /* TraktAPIInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraktAPIInterface.swift; sourceTree = "<group>"; };
 		AAF59E591D494A88004F6A20 /* Trakt.tv Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Trakt.tv Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF59E5C1D494A8B004F6A20 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -132,7 +132,7 @@
 		AAF59E7C1D494AB6004F6A20 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				AAB1FC611D496A5D008FF313 /* Movie.swift */,
+				AA4E2C161D4BDB9B00CD428E /* MediaObjects.swift */,
 			);
 			name = Model;
 			path = ../Model;
@@ -318,8 +318,8 @@
 			files = (
 				AAF59E5D1D494A8B004F6A20 /* AppDelegate.swift in Sources */,
 				AAF59E841D495576004F6A20 /* MainViewController.swift in Sources */,
-				AAB1FC621D496A5D008FF313 /* Movie.swift in Sources */,
 				AAB1FC641D496B00008FF313 /* TraktAPIInterface.swift in Sources */,
+				AA4E2C171D4BDB9B00CD428E /* MediaObjects.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
