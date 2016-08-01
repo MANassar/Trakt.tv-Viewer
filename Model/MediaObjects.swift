@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class MediaType
 {
@@ -16,10 +17,10 @@ class MediaType
     var posterThumbnailURLString:String?
     var overView:String?
     
-    func description() -> String
-    {
-        return "\(title) \(year) \(overView)"
-    }
+//    func description() -> String
+//    {
+//        return "\(title) \(year) \(overView)"
+//    }
 }
 
 class Movie:MediaType
@@ -29,6 +30,17 @@ class Movie:MediaType
     var slug:String?
     var imdb:String?
     var tmdb:Int?
+    
+    init(movieData:JSON)
+    {
+        super.init()
+        
+        self.title = movieData["title"].string
+        self.overView = movieData["overview"].string
+        self.year = String(movieData["year"].numberValue)
+        self.posterFullSizeURLString = movieData["images"]["poster"]["full"].string
+        self.posterThumbnailURLString = movieData["images"]["poster"]["thumb"].string
+    }
 }
 
 class TVShow:MediaType

@@ -11,12 +11,16 @@ import Alamofire
 import SwiftyJSON
 
 let apiKey = "ad005b8c117cdeee58a1bdb7089ea31386cd489b21e14b19818c91511f12a086"
+
 let POPULAR_MOVIES_SUCCESS_NOTIFICATION = "PopMoviesSuccess"
-let SEARCH_SUCCESS = "searchSuccessNotification"
+let POPULAR_MOVIES_FAILURE_NOTIFICATION = "PopMoviesFailed"
+let SEARCH_SUCCESS_NOTIFICATION = "SearchSuccessNotification"
+let SEARCH_FAILED_NOTIFICATION = "SearchFailedNotification"
+let SEARCH_NO_RESULT_NOTIFICATION = "SearchNoResultsNotification"
 
 class TraktAPIInterface
 {
-    let debugMode = true
+    let defaultLimit = 10
     
     let baseURL = "https://api.trakt.tv"
     let popularMoviesURL = "/movies/popular"
@@ -29,23 +33,25 @@ class TraktAPIInterface
     ]
 
     var searchRequest:Alamofire.Request?
-    var searchResultArray:[Movie]? //Search results could be anything, a movie, a show, a person, a season, or an epidsode
+    var searchResultArray = [Movie]() //Search results could be anything, a movie, a show, a person, a season, or an epidsode
     
-    func getMostPopularMovies(page:Int, limit:Int)
+    func startNetworkMonitor()
+    {
+//        NetworkReachabilityManager.st
+    }
+    
+    func getMostPopularMovies(page:Int)
     {
         var movieArray = [Movie]()
         
-        if debugMode
-        {
-            print("Getting most popular movies")
-        }
-        
+        debugPrint("Getting most popular movies")
+            
         let urlString = baseURL + popularMoviesURL
         
         debugPrint(urlString)
         //We know this is a GET request
         
-        Alamofire.request(.GET, urlString, parameters: ["extended":"full,images", "page":page], headers: defaultHeaders)
+        let moviesRequest = Alamofire.request(.GET, urlString, parameters: ["extended":"full,images", "page":page, "limit":defaultLimit], headers: defaultHeaders)
             .validate()
             .responseJSON
             {
@@ -67,13 +73,20 @@ class TraktAPIInterface
                     
                 case .Failure(let error):
                     print("Request Failed with error \(error)")
+                    NSNotificationCenter.defaultCenter().postNotificationName(POPULAR_MOVIES_FAILURE_NOTIFICATION, object: error)
                 }
         }
     }
     
-    func searchKeyword(keyword:String) //This only gets the first page
+    func searchKeyword(keyword:String, page:Int)
     {
-                //Cancel the old search request if it still hasnt returned
+        
+        //Reset the array if we're making a new search.
+        if page < 2 {
+            searchResultArray.removeAll()
+        }
+        
+        //Cancel the old search request if it still hasnt returned
         if let request = searchRequest
         {
             debugPrint("Cancelling old request")
@@ -83,7 +96,7 @@ class TraktAPIInterface
         debugPrint("Searching for \(keyword)")
         
         let urlString = baseURL + searchURL
-        searchRequest = Alamofire.request(.GET, urlString, parameters: ["extended":"full,images", "type":"movie", "query":keyword], headers: defaultHeaders)
+        searchRequest = Alamofire.request(.GET, urlString, parameters: ["extended":"full,images", "type":"movie", "query":keyword, "page":page, "limit":defaultLimit], headers: defaultHeaders)
             .validate()
             .responseJSON{
                 response in
@@ -94,12 +107,30 @@ class TraktAPIInterface
                     debugPrint("Request Successful")
                     
                     let searchJSON = JSON(data:response.data!)
-                    self.searchResultArray = self.getMoviesArrayFromJSON(searchJSON)
                     
-                    NSNotificationCenter.defaultCenter().postNotificationName(SEARCH_SUCCESS, object: self.searchResultArray)
+                    if searchJSON.count == 0 //Empty search
+                    {
+                        NSNotificationCenter.defaultCenter().postNotificationName(SEARCH_NO_RESULT_NOTIFICATION, object: nil)
+                    }
+                    
+                    for i in 0 ..< searchJSON.count
+                    {
+                        let searchResult = searchJSON[i]
+                        let searchMoviesJSON = searchResult["movie"]
+                        
+                        let currentMovie = Movie(movieData: searchMoviesJSON)
+                        
+//                        debugPrint(currentMovie)
+                        
+                        self.searchResultArray.append(currentMovie)
+                    }
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName(SEARCH_SUCCESS_NOTIFICATION, object: self.searchResultArray)
                     
                 case .Failure(let error):
                     print("Request Failed with error \(error)")
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName(SEARCH_NO_RESULT_NOTIFICATION, object: nil)
                 }
         }
     }
@@ -113,16 +144,7 @@ class TraktAPIInterface
         for i in 0 ..< json.count
         {
             let movieData = json[i]
-            
-            let currentMovie = Movie()
-            currentMovie.title = movieData["title"].string
-            currentMovie.overView = movieData["overview"].string
-            currentMovie.year = String(movieData["year"].numberValue)
-            currentMovie.posterFullSizeURLString = movieData["images"]["poster"]["full"].string
-            currentMovie.posterThumbnailURLString = movieData["images"]["poster"]["thumb"].string
-            
-            
-            
+            let currentMovie = Movie(movieData: movieData)
             parsedMovieArray.append(currentMovie)
         }
         

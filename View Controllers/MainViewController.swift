@@ -22,9 +22,11 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 {
     
     @IBOutlet var tableView: UITableView!
+    @IBOutlet var movieSearchBar: UISearchBar!
     
     var numberOfSections = 1 //Initially, just the most popular movies
     var currentPage = 1
+    var currentSearchPage = 1
     
     var moviesArray = [Movie]()
     var searchResultsArray = [Movie]()
@@ -34,6 +36,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var searchMode:Bool = false
         {
         didSet{
+            
+            self.tableView.scrollToNearestSelectedRowAtScrollPosition(.Top, animated: false)
+            
             if searchMode == true
             {
                 debugPrint("Switching to search array")
@@ -53,12 +58,21 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        apiClient.getMostPopularMovies(currentPage, limit: 10)
+        
+        self.tableView.scrollsToTop = true
+        
+        apiClient.getMostPopularMovies(currentPage)
         
         self.view.makeToastActivity(.Center)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(gotPopularMovies(_:)), name: POPULAR_MOVIES_SUCCESS_NOTIFICATION, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(gotSearchResults(_:)), name: SEARCH_SUCCESS, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(gotPopularMovies(_:)), name: POPULAR_MOVIES_FAILURE_NOTIFICATION, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(gotSearchResults(_:)), name: SEARCH_SUCCESS_NOTIFICATION, object: nil)
+        
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(gotSearchResults(_:)), name: SEARCH_FAILED_NOTIFICATION, object: nil)
+//        
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(gotSearchResults(_:)), name: SEARCH_NO_RESULT_NOTIFICATION, object: nil)
     }
     
 
@@ -81,7 +95,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.view.hideToastActivity()
         
         //We append to the array, so if it empty, we just get the initial movies. If not, then we get the next page.
-        self.searchResultsArray.appendContentsOf(notification.object as! [Movie])
+        self.searchResultsArray = notification.object as! [Movie]
         self.displayArray = searchResultsArray
         tableView.reloadData()
     }
@@ -112,7 +126,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         switch section
         {
         case 0:
-            return "Most Popular Movies"
+            return searchMode ? "Search Results" : "Most Popular Movies"
             
         default:
             return ""
@@ -132,15 +146,32 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.yearLabel.text = movie.year
                 cell.overviewTextView.text = movie.overView
                 cell.overviewTextView.scrollRangeToVisible(NSMakeRange(0, 10))
+                cell.overviewTextView.scrollRangeToVisible(NSMakeRange(0, 10))
                 
-                cell.posterImageView.sd_setImageWithURL(NSURL(string: movie.posterThumbnailURLString!), completed: nil)
+                if let posterURL = movie.posterThumbnailURLString {
+                    cell.posterImageView.sd_setImageWithURL(NSURL(string: posterURL), completed: nil)
+                }
+                
                 
                 if indexPath.row >= displayArray.count - 1
                 {
-                    currentPage += 1
                     self.view.makeToastActivity(.Bottom)
-                    debugPrint("Getting more movies, page = \(currentPage)")
-                    apiClient.getMostPopularMovies(currentPage, limit: 10)
+                    
+                    if !searchMode
+                    {
+                        currentPage += 1
+                        apiClient.getMostPopularMovies(currentPage)
+                        
+                        debugPrint("Getting next popular movies page")
+                    }
+                        
+                    else
+                    {
+                        currentSearchPage += 1
+                        apiClient.searchKeyword(movieSearchBar.text!, page:currentSearchPage)
+                        
+                        debugPrint("Getting next search page")
+                    }
                 }
                 
                 return cell
@@ -150,24 +181,6 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    //
-    // MARK: Table View Delegate
-    //
-    
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
-    {
-        let movieCell = cell as! MovieCell
-        movieCell.overviewTextView.scrollRangeToVisible(NSMakeRange(0, 10))
-        
-        // Check if this it the last cell
-        if indexPath.row >= displayArray.count
-        {
-            currentPage += 1
-            
-            debugPrint("Getting more movies, page = \(currentPage)")
-            apiClient.getMostPopularMovies(currentPage, limit: 10)
-        }
-    }
     
     
     //
@@ -176,6 +189,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String)
     {
+        
+        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+        
         if searchText == "" {
             searchMode = false
             self.tableView.reloadData()
@@ -183,8 +199,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         else
         {
+            searchMode = true
+            self.view.hideToastActivity() //In case there's a previous one
             self.view.makeToastActivity(.Center)
-            apiClient.searchKeyword(searchText)
+            apiClient.searchKeyword(searchText, page:0)
         }
         
     }
