@@ -51,7 +51,7 @@ class TraktAPIInterface
         debugPrint(urlString)
         //We know this is a GET request
         
-        let moviesRequest = Alamofire.request(.GET, urlString, parameters: ["extended":"full,images", "page":page, "limit":defaultLimit], headers: defaultHeaders)
+        Alamofire.request(.GET, urlString, parameters: ["extended":"full,images", "page":page, "limit":defaultLimit], headers: defaultHeaders)
             .validate()
             .responseJSON
             {
@@ -130,7 +130,7 @@ class TraktAPIInterface
                 case .Failure(let error):
                     print("Request Failed with error \(error)")
                     
-                    NSNotificationCenter.defaultCenter().postNotificationName(SEARCH_NO_RESULT_NOTIFICATION, object: nil)
+                    NSNotificationCenter.defaultCenter().postNotificationName(SEARCH_FAILED_NOTIFICATION, object: nil)
                 }
         }
     }

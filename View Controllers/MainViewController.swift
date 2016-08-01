@@ -35,9 +35,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     let apiClient = TraktAPIInterface()
     var searchMode:Bool = false
         {
-        didSet{
-            
-            self.tableView.scrollToNearestSelectedRowAtScrollPosition(.Top, animated: false)
+        didSet
+        {
+            self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
             
             if searchMode == true
             {
@@ -51,7 +51,6 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 self.displayArray = self.moviesArray
             }
             
-//            self.tableView.reloadData()
         }
     }
     
@@ -66,7 +65,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.view.makeToastActivity(.Center)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(gotPopularMovies(_:)), name: POPULAR_MOVIES_SUCCESS_NOTIFICATION, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(gotPopularMovies(_:)), name: POPULAR_MOVIES_FAILURE_NOTIFICATION, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(popularMoviesRequestFailed(_:)), name: POPULAR_MOVIES_FAILURE_NOTIFICATION, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(gotSearchResults(_:)), name: SEARCH_SUCCESS_NOTIFICATION, object: nil)
         
@@ -76,12 +75,14 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
 
+    //
+    // MARK: Notification handlers
+    //
+    
     func gotPopularMovies(notification:NSNotification)
     {
         debugPrint("Got movies")
-        
-        self.view.hideToastActivity()
-        
+
         //We append to the array, so if it empty, we just get the initial movies. If not, then we get the next page.
         self.moviesArray.appendContentsOf(notification.object as! [Movie])
         self.displayArray = moviesArray
@@ -92,19 +93,43 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     {
         debugPrint("Got Search results")
         
-        self.view.hideToastActivity()
-        
         //We append to the array, so if it empty, we just get the initial movies. If not, then we get the next page.
         self.searchResultsArray = notification.object as! [Movie]
         self.displayArray = searchResultsArray
         tableView.reloadData()
     }
     
+    func popularMoviesRequestFailed(notification:NSNotification)
+    {
+        self.view.hideToastActivity()
+        
+        let error = notification.object as! NSError
+        
+        let alert = UIAlertController(title: "Sorry", message: "\(error.localizedDescription). \(error.localizedRecoverySuggestion)\nWould you like to try again?", preferredStyle: .Alert)
+        
+        let cancel = UIAlertAction(title: "No", style: .Cancel, handler: nil)
+        let retry = UIAlertAction(title: "Retry", style: .Default, handler: {
+            (action:UIAlertAction!) -> Void in
+            self.apiClient.getMostPopularMovies(self.currentPage)
+        })
+        
+        alert.addAction(cancel)
+        alert.addAction(retry)
+        
+        self.presentViewController(alert, animated:true, completion: nil)
+    }
+    
+    func searchRequestFailed(notification:NSNotification)
+    {
+        debugPrint("Search request failed")
+    }
+    
     //
     //MARK: Table View Data Source
     //
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int{
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        self.view.hideToastActivity()
         return numberOfSections
     }
     
@@ -147,6 +172,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.overviewTextView.text = movie.overView
                 cell.overviewTextView.scrollRangeToVisible(NSMakeRange(0, 10))
                 cell.overviewTextView.scrollRangeToVisible(NSMakeRange(0, 10))
+                cell.posterImageView.image = UIImage(named: "Placeholder")
                 
                 if let posterURL = movie.posterThumbnailURLString {
                     cell.posterImageView.sd_setImageWithURL(NSURL(string: posterURL), completed: nil)
@@ -200,8 +226,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         else
         {
             searchMode = true
-            self.view.hideToastActivity() //In case there's a previous one
-            self.view.makeToastActivity(.Center)
+//            self.view.makeToastActivity(.Center)
             apiClient.searchKeyword(searchText, page:0)
         }
         
