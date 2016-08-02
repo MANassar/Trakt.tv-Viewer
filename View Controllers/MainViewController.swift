@@ -27,6 +27,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var numberOfSections = 1 //Initially, just the most popular movies
     var currentPage = 1
     var currentSearchPage = 1
+    var searchNoMoreResults = false
     
     var moviesArray = [Movie]()
     var searchResultsArray = [Movie]()
@@ -59,8 +60,15 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         
         self.tableView.scrollsToTop = true
+        self.tableView.estimatedRowHeight = 240
+        self.tableView.rowHeight = UITableViewAutomaticDimension
         
         apiClient.getMostPopularMovies(currentPage)
+        
+        var style = ToastStyle()
+        style.backgroundColor = UIColor(colorLiteralRed: 89, green: 89, blue: 89, alpha: 0.8)
+        
+        ToastManager.shared.style = style
         
         self.view.makeToastActivity(.Center)
         
@@ -71,7 +79,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(gotSearchResults(_:)), name: SEARCH_FAILED_NOTIFICATION, object: nil)
 //        
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(gotSearchResults(_:)), name: SEARCH_NO_RESULT_NOTIFICATION, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(searchNoResults(_:)), name: SEARCH_NO_RESULT_NOTIFICATION, object: nil)
     }
     
 
@@ -99,6 +107,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.reloadData()
     }
     
+    
     func popularMoviesRequestFailed(notification:NSNotification)
     {
         self.view.hideToastActivity()
@@ -124,12 +133,18 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         debugPrint("Search request failed")
     }
     
+    func searchNoResults (notification:NSNotification)
+    {
+        debugPrint("No more results reported!")
+        searchNoMoreResults = true
+        self.view.hideToastActivity()
+    }
+    
     //
     //MARK: Table View Data Source
     //
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        self.view.hideToastActivity()
         return numberOfSections
     }
     
@@ -160,6 +175,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
+        self.view.hideToastActivity()
+        
         switch indexPath.section
         {
         case 0: //Movies
@@ -169,9 +186,11 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 
                 cell.titleLabel.text = movie.title
                 cell.yearLabel.text = movie.year
+                
                 cell.overviewTextView.text = movie.overView
-                cell.overviewTextView.scrollRangeToVisible(NSMakeRange(0, 10))
-                cell.overviewTextView.scrollRangeToVisible(NSMakeRange(0, 10))
+//                cell.overviewTextView.scrollRangeToVisible(NSMakeRange(0, 10))
+//                cell.overviewTextView.flashScrollIndicators()
+                
                 cell.posterImageView.image = UIImage(named: "Placeholder")
                 
                 if let posterURL = movie.posterThumbnailURLString {
@@ -181,18 +200,22 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 
                 if indexPath.row >= displayArray.count - 1
                 {
-                    self.view.makeToastActivity(.Bottom)
+                    
                     
                     if !searchMode
                     {
+                        self.view.makeToastActivity(.Bottom)
+                        
                         currentPage += 1
                         apiClient.getMostPopularMovies(currentPage)
                         
                         debugPrint("Getting next popular movies page")
                     }
                         
-                    else
+                    else if !searchNoMoreResults
                     {
+                        self.view.makeToastActivity(.Bottom)
+                        
                         currentSearchPage += 1
                         apiClient.searchKeyword(movieSearchBar.text!, page:currentSearchPage)
                         
@@ -208,6 +231,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     
+//    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
+//    {
+//        debugPrint("Will display cell at \(indexPath.row)")
+//        let movieCell = cell as! MovieCell
+//        movieCell.overviewTextView.scrollRangeToVisible(NSMakeRange(0, 10))
+//        movieCell.overviewTextView.flashScrollIndicators()
+//    }
     
     //
     // MARK: Search bar delegate
@@ -217,6 +247,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     {
         
         self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+        
+        searchNoMoreResults = false 
         
         if searchText == "" {
             searchMode = false
