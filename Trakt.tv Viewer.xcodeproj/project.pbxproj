@@ -217,6 +217,7 @@
 				TargetAttributes = {
 					AAF59E581D494A88004F6A20 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = X9Z6N6JJ5G;
 					};
 					AAF59E6C1D494A8F004F6A20 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -451,9 +452,28 @@
 			baseConfigurationReference = 23D6B08E96EDD096ED72FFB1 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DT_ENABLED = DynatraceUEM;
+				DT_ENABLED_UPLOAD = YES;
+				DT_HEADER_PATH = "$(PROJECT_DIR)/../../../../../../../Users/mohamednassar/Desktop/DynaTrace/dynatrace-mobile-adk-6.3.6.1004/iOS/adk";
+				DT_LDFLAGS = "-lsqlite3 -lstdc++ -lz -framework CoreTelephony -framework MessageUI -framework Security -framework SystemConfiguration -framework CoreLocation -framework QuartzCore -framework UIKit -framework Foundation -framework CoreGraphics -force_load $(PROJECT_DIR)/../../../../../../../Users/mohamednassar/Desktop/DynaTrace/dynatrace-mobile-adk-6.3.6.1004/iOS/adk/libDynatraceUEM.a";
+				DT_LIBRARY_PATH = "$(PROJECT_DIR)/../../../../../../../Users/mohamednassar/Desktop/DynaTrace/dynatrace-mobile-adk-6.3.6.1004/iOS/adk";
+				DT_VERSION = 6.3.6.1004;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DT_HEADER_PATH)",
+				);
 				INFOPLIST_FILE = "Trakt.tv Viewer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DT_LIBRARY_PATH)",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(DT_LDFLAGS)",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -Xfrontend -debug-time-function-bodies";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mnassar.Trakt-tv-Viewer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -466,9 +486,28 @@
 			baseConfigurationReference = 9ABC8C8EEAFAEBE53BC13AB1 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DT_ENABLED = DynatraceUEM;
+				DT_ENABLED_UPLOAD = YES;
+				DT_HEADER_PATH = "$(PROJECT_DIR)/../../../../../../../Users/mohamednassar/Desktop/DynaTrace/dynatrace-mobile-adk-6.3.6.1004/iOS/adk";
+				DT_LDFLAGS = "-lsqlite3 -lstdc++ -lz -framework CoreTelephony -framework MessageUI -framework Security -framework SystemConfiguration -framework CoreLocation -framework QuartzCore -framework UIKit -framework Foundation -framework CoreGraphics -force_load $(PROJECT_DIR)/../../../../../../../Users/mohamednassar/Desktop/DynaTrace/dynatrace-mobile-adk-6.3.6.1004/iOS/adk/libDynatraceUEM.a";
+				DT_LIBRARY_PATH = "$(PROJECT_DIR)/../../../../../../../Users/mohamednassar/Desktop/DynaTrace/dynatrace-mobile-adk-6.3.6.1004/iOS/adk";
+				DT_VERSION = 6.3.6.1004;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DT_HEADER_PATH)",
+				);
 				INFOPLIST_FILE = "Trakt.tv Viewer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DT_LIBRARY_PATH)",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(DT_LDFLAGS)",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -Xfrontend -debug-time-function-bodies";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mnassar.Trakt-tv-Viewer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
